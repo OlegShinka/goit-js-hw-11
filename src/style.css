@@ -1,0 +1,9 @@
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.hidden {
+    display: none;
+}
