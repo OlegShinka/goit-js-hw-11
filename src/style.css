@@ -1,9 +1,37 @@
 .gallery {
     display: flex;
     flex-wrap: wrap;
-    gap: 40px;
+    align-items: stretch;
+    gap: 20px;
+}
+
+.info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 5px;
 }
 
 .hidden {
     display: none;
+}
+
+p {
+    margin: 0;
+}
+
+
+.search-form {
+    z-index: 100;
+
+    display: block;
+    /* margin: 0 auto; */
+
+
+    position: fixed;
+}
+
+input {
+    width: 150px;
 }
