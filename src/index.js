@@ -48,7 +48,6 @@ function handlerImg(evt) {
   }
   getImg(searchImage)
     .then(response => {
-      console.log(response);
       const totalHits = response.data.totalHits;
       const totalPage = totalHits / 40;
       // перевірка на пустий фідбек від бекенду
@@ -68,7 +67,6 @@ function handlerImg(evt) {
 }
 function handlerLoadMore(entries) {
   entries.forEach(entry => {
-    console.log(entry);
     if (entry.isIntersecting) {
       page += 1;
       getImg(searchImage, page)

@@ -1,6 +1,6 @@
 .gallery {
-    /* position: absolute;
-    top: 70px; */
+    position: relative;
+    top: 70px;
     display: flex;
     flex-wrap: wrap;
     align-items: stretch;
@@ -12,7 +12,6 @@
     flex-direction: column;
     align-items: stretch;
     justify-content: space-between;
-    /* border: 2px solid cadetblue; */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
 
@@ -41,15 +40,12 @@ p {
     margin: 0;
 }
 
-
-
 .search-form {
-    margin-left: auto;
-    /* position: fixed; */
+    margin: 0 auto;
+    position: fixed;
     z-index: 100;
     margin-bottom: 5px;
     display: block;
-    /* margin: 0 auto; */
 
 }
 
