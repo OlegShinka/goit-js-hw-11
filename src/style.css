@@ -1,8 +1,21 @@
 .gallery {
+    /* position: absolute;
+    top: 70px; */
     display: flex;
     flex-wrap: wrap;
     align-items: stretch;
     gap: 20px;
+}
+
+.photo-card {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    /* border: 2px solid cadetblue; */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+
 }
 
 .info {
@@ -11,7 +24,14 @@
     align-items: stretch;
     justify-content: space-between;
     gap: 5px;
+    margin: 4px;
+
 }
+
+.info-desc {
+    color: cadetblue;
+}
+
 
 .hidden {
     display: none;
@@ -22,16 +42,31 @@ p {
 }
 
 
-.search-form {
-    z-index: 100;
 
+.search-form {
+    margin-left: auto;
+    /* position: fixed; */
+    z-index: 100;
+    margin-bottom: 5px;
     display: block;
     /* margin: 0 auto; */
 
-
-    position: fixed;
 }
 
 input {
-    width: 150px;
+    width: 200px;
+    outline: none;
+    border: 1px solid;
+    font-size: 18px;
+    border-radius: 4px;
+    color: cadetblue;
+}
+
+button {
+    font-size: 18px;
+    background-color: cadetblue;
+    outline: none;
+    border: 1px solid;
+    border-radius: 4px;
+    color: #ffff;
 }
