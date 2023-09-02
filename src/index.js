@@ -82,6 +82,7 @@ function handlerLoadMore(entries) {
           }
           Notiflix.Notify.info(`Hooray! We found ${totalHits} images.`);
           createMarkup(response.data.hits);
+          galleryLightBox.refresh();
         })
         .catch(err => console.log(err));
     }
