@@ -27,7 +27,7 @@ refs.formEl.addEventListener('submit', handlerImg);
 const BASE_URL = 'https://pixabay.com/';
 const END_POINT = 'api/';
 const API_KEY = 'key=39106428-5c7ff9c9615a8fde7969ec155';
-let page = 1;
+let page;
 let searchImage;
 // нескінчений скролл
 const options = {
@@ -46,7 +46,8 @@ function handlerImg(evt) {
     refs.galleryEl.innerHTML = '';
     return;
   }
-  getImg(searchImage)
+  page = 1;
+  getImg(searchImage, page)
     .then(response => {
       const totalHits = response.data.totalHits;
       const totalPage = totalHits / 40;
@@ -57,7 +58,10 @@ function handlerImg(evt) {
         );
       }
       createMarkup(response.data.hits);
-      galleryLightBox.refresh();
+
+      Notiflix.Notify.info(`Hooray! We found ${totalHits} images.`);
+      observer.observe(refs.guardEl);
+      //   galleryLightBox.refresh();
       if (page < totalPage) {
         observer.observe(refs.guardEl);
       }
@@ -65,8 +69,10 @@ function handlerImg(evt) {
     .catch(err => console.log(err));
   refs.galleryEl.innerHTML = '';
 }
+
 function handlerLoadMore(entries) {
   entries.forEach(entry => {
+    console.log(entry);
     if (entry.isIntersecting) {
       page += 1;
       getImg(searchImage, page)
@@ -75,14 +81,15 @@ function handlerLoadMore(entries) {
           const totalPage = totalHits / 40;
 
           if (page > totalPage) {
-            refs.loadEl.classList.add('hidden');
             Notiflix.Notify.warning(
               "We're sorry, but you've reached the end of search results."
             );
           }
-          Notiflix.Notify.info(`Hooray! We found ${totalHits} images.`);
           createMarkup(response.data.hits);
           galleryLightBox.refresh();
+          if (page >= totalPage) {
+            observer.unobserve(refs.guardEl);
+          }
         })
         .catch(err => console.log(err));
     }
