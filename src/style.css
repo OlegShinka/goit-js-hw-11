@@ -15,6 +15,7 @@
     justify-content: space-between;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
+    height: 300px;
 
 }
 
@@ -44,6 +45,7 @@ p {
 .search-form {
     margin: 0 auto;
     position: fixed;
+    left: 1%;
     z-index: 100;
     margin-bottom: 5px;
     display: block;
@@ -57,6 +59,7 @@ input {
     font-size: 18px;
     border-radius: 4px;
     color: cadetblue;
+    opacity: 0.6;
 }
 
 button {
@@ -67,4 +70,13 @@ button {
     border-radius: 4px;
     color: #ffff;
     cursor: pointer;
+    opacity: 0.6;
+}
+
+.load-more {
+    position: fixed;
+    top: 95%;
+    left: 1%;
+    z-index: 19;
+
 }

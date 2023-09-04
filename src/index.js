@@ -1,8 +1,8 @@
 import axios from 'axios';
 import SimpleLightbox from 'simplelightbox';
-import Notiflix from 'notiflix';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-// додаткові налаштування стилів сповіщень
+import Notiflix from 'notiflix';
+
 Notiflix.Notify.init({
   width: '480px',
   position: 'center-center',
@@ -11,17 +11,16 @@ Notiflix.Notify.init({
   fontSize: '18px',
   cssAnimationStyle: 'zoom',
 });
+
+const galleryLightBox = new SimpleLightbox('.gallery a');
+
 const refs = {
   formEl: document.querySelector('.search-form'),
   btnEl: document.querySelector('button'),
   galleryEl: document.querySelector('.gallery'),
-  guardEl: document.querySelector('.js-guard'), //дів для спрацювання infinity scroll
+  loadEl: document.querySelector('.load-more'),
 };
-const galleryLightBox = new SimpleLightbox('.gallery a', {
-  captionPosition: 'bottom',
-  captionDelay: 250,
-  captionData: 'alt',
-});
+refs.loadEl.classList.add('hidden');
 refs.formEl.addEventListener('submit', handlerImg);
 
 const BASE_URL = 'https://pixabay.com/';
@@ -29,71 +28,62 @@ const END_POINT = 'api/';
 const API_KEY = 'key=39106428-5c7ff9c9615a8fde7969ec155';
 let page;
 let searchImage;
-// нескінчений скролл
-const options = {
-  rootMargin: '300px',
-};
-const observer = new IntersectionObserver(handlerLoadMore, options);
 
 function handlerImg(evt) {
   evt.preventDefault();
+  refs.loadEl.classList.remove('hidden');
   searchImage = refs.formEl.searchQuery.value;
-  //   перевірка на пустий запит
+  //перевірка на пустий запит
   if (searchImage === '') {
+    refs.loadEl.classList.add('hidden');
     Notiflix.Notify.warning(
       'Sorry, the input field cannot be empty. Please try again.'
     );
     refs.galleryEl.innerHTML = '';
     return;
   }
+
+  //   refs.galleryEl.innerHTML = '';
   page = 1;
   getImg(searchImage, page)
     .then(response => {
+      console.log(response.data.hits);
       const totalHits = response.data.totalHits;
-      const totalPage = totalHits / 40;
-      // перевірка на пустий фідбек від бекенду
-      if (response.data.hits.length === 0) {
+      const nameImage = response.data.hits;
+      if (nameImage.length === 0) {
+        refs.loadEl.classList.add('hidden');
         Notiflix.Notify.warning(
           'Sorry, there are no images matching your search query. Please try again.'
         );
       }
-      createMarkup(response.data.hits);
-
       Notiflix.Notify.info(`Hooray! We found ${totalHits} images.`);
-      observer.observe(refs.guardEl);
-      //   galleryLightBox.refresh();
-      if (page < totalPage) {
-        observer.observe(refs.guardEl);
-      }
+      createMarkup(response.data.hits);
+      galleryLightBox.refresh();
     })
     .catch(err => console.log(err));
   refs.galleryEl.innerHTML = '';
 }
 
-function handlerLoadMore(entries) {
-  entries.forEach(entry => {
-    console.log(entry);
-    if (entry.isIntersecting) {
-      page += 1;
-      getImg(searchImage, page)
-        .then(response => {
-          const totalHits = response.data.totalHits;
-          const totalPage = totalHits / 40;
+refs.loadEl.addEventListener('click', onLoad);
+function onLoad() {
+  page += 1;
 
-          if (page > totalPage) {
-            Notiflix.Notify.warning(
-              "We're sorry, but you've reached the end of search results."
-            );
-          }
-          createMarkup(response.data.hits);
-          galleryLightBox.refresh();
-          if (page >= totalPage) {
-            observer.unobserve(refs.guardEl);
-          }
-        })
-        .catch(err => console.log(err));
-    }
-  });
+  getImg(searchImage, page)
+    .then(response => {
+      const totalHits = response.data.totalHits;
+      const totalPage = totalHits / 40;
+      //   let currentTotalHits = page * 40;
+      if (page > totalPage) {
+        refs.loadEl.classList.add('hidden');
+        Notiflix.Notify.warning(
+          "We're sorry, but you've reached the end of search results."
+        );
+      }
+
+      createMarkup(response.data.hits);
+      galleryLightBox.refresh();
+    })
+    .catch(err => console.log(err));
 }
 
 async function getImg(inp, page) {
