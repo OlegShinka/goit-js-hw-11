@@ -47,7 +47,6 @@ function handlerImg(evt) {
   page = 1;
   getImg(searchImage, page)
     .then(response => {
-      console.log(response.data.hits);
       const totalHits = response.data.totalHits;
       const nameImage = response.data.hits;
       if (nameImage.length === 0) {
